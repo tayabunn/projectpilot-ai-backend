@@ -22,6 +22,8 @@ const PORT = process.env.PORT || 5000;
 // Connect to Database
 connectDB().then(() => {
   seedDatabase();
+}).catch((err) => {
+  console.error("Database connection failed during startup:", err);
 });
 
 // Middlewares
@@ -38,6 +40,15 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/sprints', sprintRoutes);
 app.use('/api/ai', aiRoutes);
+
+// Root welcome route
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to the ProjectPilot AI Backend API!',
+    status: 'healthy',
+    documentation: 'https://github.com/tayabunn/projectpilot-ai-backend'
+  });
+});
 
 // Health check
 app.get('/health', (req, res) => {
